@@ -34,11 +34,16 @@ function updateCounter(result) {
     tieCount++;
     document.getElementById('tieCounter').innerText = tieCount;
   } else if (result === currentPlayer) {
+    if (currentPlayer === 'X') {
+      winCount++;
+      document.getElementById('winCounter').innerText = winCount;
+    } else {
+      lossCount++;
+      document.getElementById('lossCounter').innerText = lossCount;
+    }
+  } else if (currentPlayer === 'O') {
     winCount++;
     document.getElementById('winCounter').innerText = winCount;
-  } else {
-    lossCount++;
-    document.getElementById('lossCounter').innerText = lossCount;
   }
 }
 
@@ -99,6 +104,7 @@ function botMove() {
   playerMove(botChoice);
 }
 
+
 function resetGame() {
   gameActive = true;
   currentPlayer = 'X';
@@ -114,4 +120,8 @@ function resetCounters() {
   document.getElementById('tieCounter').innerText = tieCount;
   document.getElementById('winCounter').innerText = winCount;
   document.getElementById('lossCounter').innerText = lossCount;
+}
+
+function exitGame() {
+    window.close(); // Close the current tab or window
 }
