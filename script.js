@@ -1,127 +1,182 @@
-let currentPlayer = 'X';
-let gameBoard = ['', '', '', '', '', '', '', '', ''];
-let gameActive = true;
-let tieCount = 0;
-let winCount = 0;
-let lossCount = 0;
-
-const winningCombos = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
-];
-
-function checkWinner(board) {
-  for (let combo of winningCombos) {
-    const [a, b, c] = combo;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return board[a];
-    }
-  }
-  if (board.every(cell => cell !== '')) {
-    return 'T';
-  }
-  return null;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
 }
 
-function updateCounter(result) {
-  if (result === 'T') {
-    tieCount++;
-    document.getElementById('tieCounter').innerText = tieCount;
-  } else if (result === currentPlayer) {
-    if (currentPlayer === 'X') {
-      winCount++;
-      document.getElementById('winCounter').innerText = winCount;
-    } else {
-      lossCount++;
-      document.getElementById('lossCounter').innerText = lossCount;
-    }
-  } else if (currentPlayer === 'O') {
-    winCount++;
-    document.getElementById('winCounter').innerText = winCount;
-  }
+.container {
+  text-align: center;
+  margin-top: 50px;
 }
 
-function playerMove(cellIndex) {
-  if (!gameActive || gameBoard[cellIndex] !== '') return;
+h1 {
+  font-size: 36px;
+  color: #333;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
 
-  gameBoard[cellIndex] = currentPlayer;
-  document.getElementById('game-board').children[cellIndex].innerText = currentPlayer;
-  
-  const winner = checkWinner(gameBoard);
-  if (winner) {
-    gameActive = false;
-    if (winner === 'T') {
-      document.getElementById('result').innerText = "It's a Tie!";
-    } else {
-      document.getElementById('result').innerText = `${winner} Wins!`;
-    }
-    updateCounter(winner);
-  } else {
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    if (currentPlayer === 'O') {
-      setTimeout(botMove, 500); // Delay bot move for better visualization
-    }
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 10px;
+  width: 320px;
+  margin: auto;
+}
+
+.cell {
+  border: 2px solid #333;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cell:hover {
+  background-color: #ddd;
+}
+
+.cell.player-X {
+  color: #f44336;
+  animation: fadeIn 0.5s ease;
+}
+
+.cell.player-O {
+  color: #4caf50;
+  animation: fadeIn 0.5s ease;
+}
+
+.winning-cell {
+  background-color: #ffeb3b;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
-function botMove() {
-  let emptyCells = gameBoard.reduce((acc, cell, index) => {
-    if (cell === '') {
-      acc.push(index);
-    }
-    return acc;
-  }, []);
+#result {
+  font-size: 24px;
+  color: #333;
+  margin-top: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
 
-  // Check if the bot can win in the next move
-  for (let index of emptyCells) {
-    let tempBoard = [...gameBoard];
-    tempBoard[index] = currentPlayer;
-    if (checkWinner(tempBoard) === currentPlayer) {
-      playerMove(index);
-      return;
-    }
+.counter {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.counter span {
+  font-size: 24px;
+  color: #333;
+  margin: 5px;
+  transition: transform 0.3s ease;
+}
+
+.counter span::before {
+  content: ":";
+  margin-right: 5px;
+}
+
+.counter button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background: linear-gradient(to bottom, #4caf50 0%, #388e3c 100%);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.counter button:hover {
+  background: linear-gradient(to bottom, #45a049 0%, #388e3c 100%);
+}
+
+#resetButton,
+#exitButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background: linear-gradient(to bottom, #f44336 0%, #d32f2f 100%);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#resetButton:hover,
+#exitButton:hover {
+  background: linear-gradient(to bottom, #d32f2f 0%, #c62828 100%);
+}
+
+#exitButton {
+  background: linear-gradient(to bottom, #ff9800 0%, #f57c00 100%);
+}
+
+#exitButton:hover {
+  background: linear-gradient(to bottom, #f57c00 0%, #e65100 100%);
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #2196F3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #0b7dda;
+}
+
+@media screen and (max-width: 768px) {
+  #game-board {
+    width: 90%;
+    max-width: 300px;
   }
 
-  // Check if the player can win in the next move and block
-  for (let index of emptyCells) {
-    let tempBoard = [...gameBoard];
-    tempBoard[index] = currentPlayer === 'X' ? 'O' : 'X';
-    if (checkWinner(tempBoard) === (currentPlayer === 'X' ? 'O' : 'X')) {
-      playerMove(index);
-      return;
-    }
+  .cell {
+    font-size: 24px;
   }
 
-  // Otherwise, make a random move
-  let randomIndex = Math.floor(Math.random() * emptyCells.length);
-  let botChoice = emptyCells[randomIndex];
-  playerMove(botChoice);
-}
+  .container {
+    margin-top: 20px;
+  }
 
+  .counter span {
+    font-size: 20px;
+  }
 
-function resetGame() {
-  gameActive = true;
-  currentPlayer = 'X';
-  gameBoard = ['', '', '', '', '', '', '', '', ''];
-  document.getElementById('result').innerText = '';
-  Array.from(document.getElementById('game-board').children).forEach(cell => cell.innerText = '');
-}
+  .counter button {
+    font-size: 14px;
+  }
 
-function resetCounters() {
-  tieCount = 0;
-  winCount = 0;
-  lossCount = 0;
-  document.getElementById('tieCounter').innerText = tieCount;
-  document.getElementById('winCounter').innerText = winCount;
-  document.getElementById('lossCounter').innerText = lossCount;
-}
-
-function exitGame() {
-    window.close(); // Close the current tab or window
+  #resetButton,
+  #exitButton {
+    font-size: 16px;
+    margin-top: 10px;
+  }
 }
