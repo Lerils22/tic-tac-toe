@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  h1 {
+    font-size: 36px;
+    color: #333;
+  }
+  
+  #game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    width: 320px;
+    margin: auto;
+  }
+  
+  .cell {
+    border: 2px solid #333;
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cell:hover {
+    background-color: #ddd;
+  }
+  
+  #result {
+    font-size: 24px;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  .counter {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .counter span {
+    font-size: 24px;
+    color: #333;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .counter span::before {
+    content: ":";
+    margin-right: 5px;
+  }
+  
+  .counter button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .counter button:hover {
+    background-color: #45a049;
+  }
+  
+  #resetButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #resetButton:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Responsive Styling */
+  @media screen and (max-width: 768px) {
+    #game-board {
+      width: 90%;
+      max-width: 300px;
+    }
+  
+    .cell {
+      font-size: 24px;
+    }
+  
+    .container {
+      margin-top: 20px;
+    }
+  
+    .counter span {
+      font-size: 20px;
+    }
+  
+    .counter button {
+      font-size: 14px;
+    }
+  
+    #resetButton {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  }
+  
